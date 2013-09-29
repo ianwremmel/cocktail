@@ -25,7 +25,7 @@ module.exports = (grunt) ->
         objectToExport: 'Cocktail'
         globalAlias: 'Cocktail'
         deps:
-          defaults: ['Backbone', '_']
+          default: ['Backbone', '_']
           amd: ['backbone', 'underscore']
           cjs: ['backbone', 'underscore']
 

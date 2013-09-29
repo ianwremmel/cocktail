@@ -6,9 +6,9 @@
         define(['backbone', 'underscore'], factory);
     }
     else {
-        root.Cocktail = factory();
+        root.Cocktail = factory(root.Backbone, root._);
     }
-}(this, function() {
+}(this, function(Backbone, _) {
 //     Cocktail.js 0.3.0
 //     (c) 2012 Onsi Fakhouri
 //     Cocktail.js may be freely distributed under the MIT license.
