@@ -9,7 +9,7 @@ Mixins are simply bare-bones JavaScript objects that provide additional function
 Here's an example mixin that implements selectability on a view based on a model's selection state:
 
     window.MyMixins = {};
-    
+
     MyMixins.SelectMixin = {
       initialize: function() {
         this.model.on('change:selected', this.refreshSelect, this);
@@ -83,6 +83,8 @@ or like this for CoffeeScript users:
 
     class MyView extends Backbone.View
       @mixin MyMixins.SelectMixin
+
+*Note:* For requirejs (and likely most other module loaders) users, you'll need to include `patch.js` rather than running `Cocktail.patch(Backbone)`.
 
 
 with the monkey-patch installed, mixins are just a convenient bit of configuration at the top of your class definitions. Note that the patch should only be applied once.
