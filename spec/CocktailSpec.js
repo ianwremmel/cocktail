@@ -245,6 +245,11 @@ describe('Cocktail', function() {
             describe('hashes', function() {
                 it("should merge in the events hash", function() {
                     view = new ViewClass();
+                    expect(view.events).toEqual({
+                      'click .B': 'clickB',
+                      'click .A': 'clickA',
+                      'click .view' : 'clickView'
+                     });
 
                     $('#content').append(view.$el);
 

@@ -147,6 +147,60 @@ The return value of the composite function is the **last** non-`undefined` retur
 
 To be clear: let's say **X** mixes in **A** and **B**.  Say **X** implements a method `foo` that returns `bar`, **A** implements `foo` but returns nothing (i.e. `undefined` is implicitly returned) and **B** returns `baz`.  Then instances of **X** will return `baz` -- the last non-`undefined` return value from `foo`'s **X** &rarr; **A** &rarr; **B** collision chain.
 
+### Advanced Collision Handling
+
+Though merging collisions and returning the final result works in many cases, sometimes, more complex options are required. To specify explicit collision handlers, add a `__collisions` hash to your mixin contain `key:value` pairs for mixin property (properties not specified will fall-back to the standard merge style).
+
+Given a class **X** and mixin **A** where each contain an `events` hash and a `render()` method, collision resolution can be specified in the following ways:
+
+#### `before` (default for hashes)
+
+```
+X.render = function() {
+  A.render();
+  return X.render();
+}
+
+X.events = _.assign({}, A.events, X.events);
+```
+
+#### `after` (default for functions)
+
+```
+X.render = function() {
+  X.render();
+  return A.render();
+}
+
+X.events = _.assign({}, X.events, A.events);
+```
+
+#### `wrap`
+
+```
+X.render = _.wrap(X.render, A.render);
+```
+
+throws for hashes
+
+#### `replace`
+
+```
+X.render = A.render
+X.events = A.events
+```
+
+#### `compose`
+
+`compose` works a bit differently from the other options: instead of receiving the same arguments that the base class's method receives, a composed method receives the result of the base class's method.
+
+In many cases, `compose` is probably preferable to `after`
+
+```
+X.render = _.compose(A.render, X.render);
+```
+
+
 ## And how about hashes?
 
 When both a mixin and the class define a hash, Cocktail will merge the hashes together.  In the case of a key collision, keys and values defined in the hash on the class take precedence followed the hash on the first mixin, then the second mixin, etc...
