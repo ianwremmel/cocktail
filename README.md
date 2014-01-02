@@ -190,6 +190,15 @@ X.render = A.render
 X.events = A.events
 ```
 
+#### `withdraw`
+
+Offers a means for the mixin to withdraw its offer of a value if the base class provides one. (I'm not thrilled with the name but `default` and `defer` seemed like they would mean something else).
+
+```
+X.render = X.render
+X.events = X.events
+```
+
 #### `compose`
 
 `compose` works a bit differently from the other options: instead of receiving the same arguments that the base class's method receives, a composed method receives the result of the base class's method.

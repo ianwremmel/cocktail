@@ -25,7 +25,7 @@ var applyMixin = function(proto, mixin) {
     resolution = resolution || 'after';
 
     var buildHandler = function(X, A) {
-      return function() {
+      return function X1() {
         var retX = _.isFunction(X) ? X.apply(this, arguments) : X;
         var retA = _.isFunction(A) ? A.apply(this, arguments) : A;
 
@@ -45,6 +45,9 @@ var applyMixin = function(proto, mixin) {
 
     case 'replace':
       return mixinMethod;
+
+    case 'withdraw':
+      return classMethod;
 
     case 'compose':
       return _.compose(mixinMethod, classMethod);
@@ -66,6 +69,9 @@ var applyMixin = function(proto, mixin) {
 
     case 'replace':
       return mixinHash;
+
+    case 'withdraw':
+      return classHash;
 
     default:
       throw new Error('Resolution "' + resolution + '" not valid for hashes.');
@@ -92,91 +98,6 @@ Cocktail.mixin = function mixin(klass) {
   var mixins = _.chain(arguments).toArray().rest().flatten().value();
   // Allows mixing into the constructor's prototype or the dynamic instance
   var proto = klass.prototype || klass;
-
-  // var applyMixin = function(mixin) {
-  //   if (_.isString(mixin)) {
-  //     mixin = Cocktail.mixins[mixin];
-  //   }
-
-  //   var resolutions = mixin.__collisions || {};
-
-  //   var handleMethodCollision = function(value, key) {
-  //     var resolution = resolutions[key] || 'after';
-
-  //     switch (resolution) {
-  //     case 'before':
-  //       obj[key] = function() {
-  //         obj[key].apply(this, arguments);
-  //         return value.apply(this, arguments);
-  //       };
-  //       break;
-
-  //     case 'after':
-  //       obj[key] = function() {
-  //         value.apply(this, arguments);
-  //         return obj[key].apply(this, arguments);
-  //       };
-  //       break;
-
-  //     case 'wrap':
-  //       obj[key] = _.wrap(obj[key], value);
-  //       break;
-
-  //     case 'replace':
-  //       obj[key] = value;
-  //       break;
-
-  //     case 'compose':
-  //       obj[key] = _.compose(value, obj[key]);
-  //       break;
-
-  //     default:
-  //       throw new Error('Resolution "' + resolution + '" not recognized.');
-  //     }
-  //   };
-
-  //   var handleHashCollision = function(value, key) {
-  //     var resolution = resolutions[key] || 'before';
-
-  //     switch (resolution) {
-  //     case 'before':
-  //       obj[key] = _.extend({}, value, obj[key] || {});
-  //       break;
-  //     case 'after':
-  //       obj[key] = _.extend({}, obj[key], value);
-  //       break;
-  //     case 'wrap':
-  //       throw new Error('Resolution "wrap" not valid for hashes.');
-  //     case 'replace':
-  //       obj[key] = value;
-  //       break;
-  //     case 'compose':
-  //       throw new Error('Resolution "compose" not valid for hashes.');
-  //     default:
-  //       throw new Error('Resolution "' + resolution + '" not recognized.');
-  //     }
-  //   };
-
-  //   var applyMixinProperty = function(value, key) {
-  //     if (key !== '__collisions') {
-  //       if (obj[key]) {
-  //         if (_.isFunction(value)) {
-  //           handleMethodCollision(value, key);
-  //         }
-  //         else if (_.isObject(value)) {
-  //           handleHashCollision(value, key);
-  //         }
-  //       }
-  //       else {
-  //         obj[key] = value;
-  //       }
-  //     }
-  //   };
-
-  //   _(mixin).each(applyMixinProperty);
-  // };
-
-
 
   _(mixins).each(_.partial(applyMixin, proto));
 };

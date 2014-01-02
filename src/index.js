@@ -14,7 +14,7 @@ var applyMixin = function(proto, mixin) {
     resolution = resolution || 'after';
 
     var buildHandler = function(X, A) {
-      return function() {
+      return function X1() {
         var retX = _.isFunction(X) ? X.apply(this, arguments) : X;
         var retA = _.isFunction(A) ? A.apply(this, arguments) : A;
 
@@ -34,6 +34,9 @@ var applyMixin = function(proto, mixin) {
 
     case 'replace':
       return mixinMethod;
+
+    case 'withdraw':
+      return classMethod;
 
     case 'compose':
       return _.compose(mixinMethod, classMethod);
@@ -55,6 +58,9 @@ var applyMixin = function(proto, mixin) {
 
     case 'replace':
       return mixinHash;
+
+    case 'withdraw':
+      return classHash;
 
     default:
       throw new Error('Resolution "' + resolution + '" not valid for hashes.');
